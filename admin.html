@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DocuRace | Administración</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="adminPage">
+<main class="adminShell">
+  <header class="adminHeader">
+    <div>
+      <p class="adminEyebrow">DOCURACE / CONTROL</p>
+      <h1>Administrar usuarios</h1>
+      <p class="adminIntro">Consulta, corrige o elimina los jugadores registrados en este navegador.</p>
+    </div>
+    <a class="adminBack" href="index.html">← Volver al inicio</a>
+  </header>
+
+  <section id="adminLogin" class="adminLogin" aria-labelledby="adminLoginTitle">
+    <h2 id="adminLoginTitle">Acceso restringido</h2>
+    <p>Introduce el código de administración para continuar.</p>
+    <form id="adminLoginForm">
+      <label for="adminCode">Código de acceso</label>
+      <input id="adminCode" type="password" autocomplete="off" required>
+      <button class="adminPrimary" type="submit">Entrar</button>
+      <p id="adminLoginMessage" class="adminMessage" role="alert"></p>
+    </form>
+  </section>
+
+  <section id="adminContent" class="adminContent hidden" aria-live="polite">
+    <div class="adminToolbar">
+      <div><strong id="userCount">0 usuarios</strong><span> registrados</span></div>
+      <button id="refreshUsers" class="adminSecondary" type="button">↻ Actualizar</button>
+    </div>
+    <div id="userList" class="userList"></div>
+  </section>
+</main>
+<script src="database.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
