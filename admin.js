@@ -85,3 +85,4 @@ adminLoginForm.addEventListener('submit', event => {
 });
 
 document.getElementById('refreshUsers').addEventListener('click', renderUsers);
+window.docuRaceReady?.then(renderUsers);

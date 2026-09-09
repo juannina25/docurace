@@ -647,3 +647,4 @@ const ADMIN_CODE='ADG2026';
 const openAdmin=()=>{location.href='admin.html'};
 $('startBtn').onclick=startNew;$('doci').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();useHint()}};$('resumeBtn').onclick=resume;$('backCategories1').onclick=returnCategories;$('backCategories2').onclick=returnCategories;$('continueMatchBtn').onclick=continueMatch;$('verifyBtn').onclick=checkOrder;$('nextBtn').onclick=nextLevel;$('doci').onclick=useHint;$('logoutBtn').onclick=()=>{showOnlyScreen('startScreen');renderProfiles();loadRanking();say('Cuando quieras volver, usa tu código de jugador.')};renderProfiles();loadRanking();setTimeout(ensureVisibleUI,200);window.addEventListener('error',()=>setTimeout(ensureVisibleUI,0));window.addEventListener('unhandledrejection',()=>setTimeout(ensureVisibleUI,0));
 $('adminBtn').onclick=openAdmin;
+window.docuRaceReady?.then(()=>{renderProfiles();loadRanking()});

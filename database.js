@@ -1,7 +1,14 @@
-﻿// GitHub Pages: sin Firebase. El progreso y ranking se guardan en localStorage.
+﻿// localStorage es cache local; api.php conserva la copia compartida en JSON.
 const STORAGE_KEY="docuraceData";
-const readData=()=>{try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{"players":{},"scores":{}}')}catch{return {players:{},scores:{}}}};
-const writeData=d=>localStorage.setItem(STORAGE_KEY,JSON.stringify(d));
+const EMBEDDED_DATA={players:{},scores:{}};
+const readData=()=>{try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||JSON.stringify(EMBEDDED_DATA))}catch{return {players:{},scores:{}}}};
+const remoteEnabled=location.protocol!=="file:";
+let remoteQueue=Promise.resolve();
+const persistLocal=d=>localStorage.setItem(STORAGE_KEY,JSON.stringify(d));
+const syncRemote=d=>{if(!remoteEnabled)return;remoteQueue=remoteQueue.then(()=>fetch("api.php",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)})).catch(err=>console.warn("No se pudo sincronizar el JSON remoto:",err))};
+const writeData=d=>{persistLocal(d);syncRemote(d)};
+const loadRemoteData=async()=>{if(!remoteEnabled)return;try{const response=await fetch("api.php",{cache:"no-store"});if(!response.ok)throw new Error(`HTTP ${response.status}`);const remote=await response.json();const local=readData();const remoteHasData=Object.keys(remote?.players||{}).length||Object.keys(remote?.scores||{}).length;const localHasData=Object.keys(local.players||{}).length||Object.keys(local.scores||{}).length;if(remoteHasData){persistLocal({players:remote.players||{},scores:remote.scores||{}})}else if(localHasData){syncRemote(local)}}catch(err){console.warn("Se usará la copia local:",err)}};
+window.docuRaceReady=loadRemoteData();
 const savePlayerData=(code,data)=>{const d=readData();d.players[code]=data;writeData(d)};
 const getPlayerData=code=>readData().players[code]||null;
 const getAllPlayers=()=>Object.entries(readData().players||{}).map(([code,player])=>({code,...player}));
